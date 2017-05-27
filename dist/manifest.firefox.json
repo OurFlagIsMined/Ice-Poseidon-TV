@@ -1,7 +1,7 @@
 {
     "name": "Ice Poseidon TV",
-    "version": "2.4.0",
-    "description": "The official Ice Poseidon Chrome extension, includes all Twitch emotes and showing notifications when Ice Poseidon goes live.",
+    "version": "3.0.1",
+    "description": "The official Ice Poseidon browser extension, includes all Twitch emotes and showing notifications when Ice Poseidon goes live.",
     "icons": {
         "64": "icons/64.png",
         "128": "icons/128.png"
@@ -17,12 +17,12 @@
         "https://api.betterttv.net/2/channels/*"
     ],
     "options_page": "options/options.html",
-    "options_ui": { 
-        "page": "options/options.html" 
+    "options_ui": {
+        "page": "options/options.html"
     },
     "background": {
         "scripts": [
-            "external/jquery.min.js",
+            "external/jquery.js",
             "background.js"
         ]
     },
@@ -35,20 +35,33 @@
     "content_security_policy": "script-src 'self' https://*.twitter.com https://*.twimg.com; object-src 'self'",
     "content_scripts": [{
         "js": [
-            "/external/jquery.min.js",
+            "/external/jquery.js",
             "content.js"
         ],
         "css": [
-            "external/hint.min.css"
+            "external/hint.css",
+			"content.css"
         ],
         "run_at": "document_end",
         "matches": [
             "*://*.gaming.youtube.com/*",
             "*://*.youtube.com/*"
-        ]
+        ],
+        "all_frames": true
     }],
     "web_accessible_resources": [
         "64.png",
-        "external/chatColors.min.css"
-    ]
+        "external/chat-colors.css",
+        "icons/donate-icon.png",
+        "icons/sponsor-icon.png",
+        "icons/scroll-enabled.png",
+        "icons/scroll-disabled.png",
+		"icons/TriHard-old.png"
+    ],
+	"applications": {
+		"gecko": {
+			"id": "ice_poseidon_tv@rawgit.com",
+			"update_url": "https://raw.githubusercontent.com/ansien12/Ice-Poseidon-TV/master/updates.json"
+		}
+	}
 }

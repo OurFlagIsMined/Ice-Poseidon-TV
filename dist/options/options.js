@@ -8,12 +8,14 @@ window.addEventListener('load', function () {
     options.emotesTwitch.checked = JSON.parse(localStorage.emotesTwitch);
     options.emotesBTTV.checked = JSON.parse(localStorage.emotesBTTV);
     options.emotesSub.checked = JSON.parse(localStorage.emotesSub);
+    options.emotesIce.checked = JSON.parse(localStorage.emotesIce);
     options.BTTVChannels.value = localStorage.BTTVChannels;
     options.disableAvatars.checked = JSON.parse(localStorage.disableAvatars);
     options.enableChatColors.checked = JSON.parse(localStorage.enableChatColors);
     options.redirectToYTGaming.checked = JSON.parse(localStorage.redirectToYTGaming);
     options.enableSplitChat.checked = JSON.parse(localStorage.enableSplitChat);
     options.showDeletedMessages.checked = JSON.parse(localStorage.showDeletedMessages);
+    options.mentionHighlight.checked = JSON.parse(localStorage.mentionHighlight);
 
     options.isActivated.onchange = function () {
         localStorage.isActivated = options.isActivated.checked;
@@ -43,8 +45,11 @@ window.addEventListener('load', function () {
         localStorage.emotesSub = options.emotesSub.checked;
     };
 
+    options.emotesIce.onchange = function () {
+        localStorage.emotesIce = options.emotesIce.checked;
+    };
+
     options.BTTVChannels.onchange = function () {
-        console.log(localStorage.BTTVChannels);
         localStorage.BTTVChannels = options.BTTVChannels.value;
     };
 
@@ -63,9 +68,13 @@ window.addEventListener('load', function () {
     options.enableSplitChat.onchange = function () {
         localStorage.enableSplitChat = options.enableSplitChat.checked;
     };
-    
+
     options.showDeletedMessages.onchange = function () {
         localStorage.showDeletedMessages = options.showDeletedMessages.checked;
+    };
+
+    options.mentionHighlight.onchange = function () {
+        localStorage.mentionHighlight = options.mentionHighlight.checked;
     };
 
     var audio = localStorage.getItem('audio');
@@ -135,7 +144,7 @@ var showTestNotification = function () {
 
         if (localStorage.getItem('audio') === null) {
 
-            var defaultSound = new Audio('../online.mp3');
+            var defaultSound = new Audio('./../sounds/online.mp3');
             var volume = (localStorage.notificationVolume / 100);
 
             defaultSound.volume = (typeof volume == 'undefined' ? 0.50 : volume);
@@ -196,7 +205,7 @@ var createSoundWithBuffer = function (buffer) {
         audioSource.buffer = res;
         audioSource.start(0);
     });
-}
+};
 
 // Check for valid audio extensions.
 var hasExtension = function (inputID, exts) {

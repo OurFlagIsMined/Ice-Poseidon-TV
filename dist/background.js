@@ -2,28 +2,23 @@ const CHANNEL_ID = 'UCv9Edl_WbtbPeURPtFDo-uA',
     INTERVAL = 1000 * 30, // 30 second interval
     DEFAULT_ICON_PATH = './icons/128.png',
     LIVE_ICON_PATH = './icons/128-green.png',
-    soundEffect = new Audio('online.mp3'),
-    lastNotification = null;
-
-let currentIconPath = DEFAULT_ICON_PATH;
+    SOUND_EFFECT = new Audio('sounds/online.mp3');
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
-    var response = {};
+    let data = {};
 
-    for (var i = 0; i < request.items.length; i++) {
-        response[request.items[i]] = JSON.parse(localStorage[request.items[i]]);
+    for (let i = 0, len = localStorage.length; i < len; i++) {
+
+        let item = localStorage.getItem(localStorage.key(i));
+
+        if (item === 'true') item = true;
+        if (item === 'false') item = false;
+
+        data[localStorage.key(i)] = item;
     }
 
-    sendResponse({
-        data: response,
-        BTTVChannels: localStorage['BTTVChannels'],
-        disableAvatars: JSON.parse(localStorage['disableAvatars']),
-        enableChatColors: JSON.parse(localStorage['enableChatColors']),
-        redirectToYTGaming: JSON.parse(localStorage['redirectToYTGaming']),
-        enableSplitChat: JSON.parse(localStorage['enableSplitChat']),
-        showDeletedMessages: JSON.parse(localStorage['showDeletedMessages'])
-    });
+    sendResponse(data);
 });
 
 chrome.notifications.onClicked.addListener(function(notificationId) {
@@ -38,13 +33,6 @@ var showNotification = function () {
     var time = /(..)(:..)/.exec(new Date());
     var hour = time[1] % 12 || 12;
     var period = time[1] < 12 ? 'AM' : 'PM';
-
-    // Temp fix to prevent notification spam
-    if (((Date.now() - lastNotification) >= (1000 * 60 * 30)) && (lastNotification !== null)) {
-        return ;
-    }
-
-    lastNotification = Date.now();
 
     if (JSON.parse(localStorage.isActivated) === true) {
 
@@ -61,11 +49,10 @@ var showNotification = function () {
 
         if (localStorage.getItem('audio') === null) {
 
-            var defaultSound = new Audio('online.mp3');
             var volume = (localStorage.notificationVolume / 100);
 
-            defaultSound.volume = (typeof volume == 'undefined' ? 0.50 : volume);
-            defaultSound.play();
+            SOUND_EFFECT.volume = (typeof volume == 'undefined' ? 0.50 : volume);
+            SOUND_EFFECT.play();
 
         } else {
 
@@ -83,12 +70,9 @@ var updateIcon = function () {
 
     const iconPath = isLive ? LIVE_ICON_PATH : DEFAULT_ICON_PATH;
 
-    if (iconPath !== currentIconPath) {
-        currentIconPath = iconPath;
-        chrome.browserAction.setIcon({
-            path: currentIconPath
-        });
-    }
+    chrome.browserAction.setIcon({
+        path: iconPath
+    });
 };
 
 var checkIfLive = function () {
@@ -116,17 +100,19 @@ if (window.Notification) {
 if (!localStorage.isLive) localStorage.isLive = false;
 if (!localStorage.isActivated) localStorage.isActivated = true;
 if (!localStorage.notificationSoundEnabled) localStorage.notificationSoundEnabled = true;
-if (!localStorage.notificationVolume) localStorage.notificationVolume = 50;
+if (!localStorage.notificationVolume) localStorage.notificationVolume = 40;
 if (!localStorage.showRecentTweet) localStorage.showRecentTweet = true;
 if (!localStorage.emotesTwitch) localStorage.emotesTwitch = true;
 if (!localStorage.emotesBTTV) localStorage.emotesBTTV = true;
 if (!localStorage.emotesSub) localStorage.emotesSub = true;
+if (!localStorage.emotesIce) localStorage.emotesIce = true;
 if (!localStorage.BTTVChannels) localStorage.BTTVChannels = 'Ice_Poseidon, monkasen, graphistrs, trihex, reckful, b0aty, NightDev';
 if (!localStorage.disableAvatars) localStorage.disableAvatars = true;
 if (!localStorage.enableChatColors) localStorage.enableChatColors = true;
 if (!localStorage.redirectToYTGaming) localStorage.redirectToYTGaming = true;
 if (!localStorage.enableSplitChat) localStorage.enableSplitChat = false;
 if (!localStorage.showDeletedMessages) localStorage.showDeletedMessages = false;
+if (!localStorage.mentionHighlight) localStorage.mentionHighlight = true;
 
 if (localStorage.BTTVChannels) {
     localStorage.BTTVChannels = localStorage.BTTVChannels.replace('MonkaSenpai', 'monkasen');

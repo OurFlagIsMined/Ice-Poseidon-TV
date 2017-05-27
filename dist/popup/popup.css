@@ -1,12 +1,18 @@
-body {
+body, html {
 	font-family: 'Noto Sans', sans-serif;
 	background: #292F33;
 	color: #ffffff;
 	font-size: 13px;
-	text-shadow: 2px 2px 2px rgba(0,0,0,0.20);
 	margin: 0;
 	-webkit-font-smoothing: antialiased;
 	text-shadow: rgba(0,0,0,.01) 0 0 1px;
+    overflow: hidden;
+    width: 431px;
+}
+
+.bottom-container {
+    height: 21px;
+    width: 100%;
 }
 
 .container {
@@ -73,6 +79,13 @@ a {
 .stream-status {
 	cursor: pointer;
 	margin: 14px 0 0 0;
+    width: 100%;
+    text-align: center;
+}
+
+.view-count {
+    margin: 4px 0 0 0;
+    font-size: 12px;
 }
 
 .status.offline {
@@ -94,6 +107,14 @@ a {
 
 .tweet-container {
 	margin: 14px 0 4px 0;
+    height: 124px;
+    overflow: hidden;
+}
+
+@-moz-document url-prefix() {
+    .tweet-container {
+        border-bottom: 1px solid #677680;
+    }
 }
 
 .github-wrapper, .divider-right-wrapper, .divider-left-wrapper, .options-wrapper, .version-wrapper, .changelog-wrapper {
